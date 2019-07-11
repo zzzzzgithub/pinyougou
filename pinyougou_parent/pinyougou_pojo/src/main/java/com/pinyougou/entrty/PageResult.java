@@ -1,4 +1,4 @@
-package com.pinyougou.entity;
+package com.pinyougou.entrty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +20,7 @@ public class PageResult<T> implements Serializable {
       this.pages = pages;
       this.rows = rows;
    }
-   //省略了get..与set....
+
 
    public long getPages() {
       return pages;
