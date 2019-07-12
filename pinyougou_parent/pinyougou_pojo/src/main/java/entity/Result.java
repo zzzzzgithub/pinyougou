@@ -1,4 +1,4 @@
-package com.pinyougou.entrty;
+package entity;
 
 import java.io.Serializable;
 

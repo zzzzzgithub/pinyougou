@@ -1,8 +1,8 @@
 package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbBrand;
-import com.pinyougou.service.BrandService;
+import com.pinyougou.pojo.TbContentCategory;
+import com.pinyougou.service.ContentCategoryService;
 import entity.PageResult;
 import entity.Result;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,19 +16,19 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping("/brand")
-public class BrandController {
+@RequestMapping("/contentCategory")
+public class ContentCategoryController {
 
 	@Reference
-	private BrandService brandService;
+	private ContentCategoryService contentCategoryService;
 	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbBrand> findAll(){			
-		return brandService.findAll();
+	public List<TbContentCategory> findAll(){			
+		return contentCategoryService.findAll();
 	}
 	
 	
@@ -37,19 +37,19 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("/findPage")
-	public PageResult  findPage(int pageNo,int pageSize,@RequestBody TbBrand brand){			
-		return brandService.findPage(pageNo, pageSize,brand);
+	public PageResult  findPage(int pageNo,int pageSize,@RequestBody TbContentCategory contentCategory){			
+		return contentCategoryService.findPage(pageNo, pageSize,contentCategory);
 	}
 	
 	/**
 	 * 增加
-	 * @param brand
+	 * @param contentCategory
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbBrand brand){
+	public Result add(@RequestBody TbContentCategory contentCategory){
 		try {
-			brandService.add(brand);
+			contentCategoryService.add(contentCategory);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,13 +59,13 @@ public class BrandController {
 	
 	/**
 	 * 修改
-	 * @param brand
+	 * @param contentCategory
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbBrand brand){
+	public Result update(@RequestBody TbContentCategory contentCategory){
 		try {
-			brandService.update(brand);
+			contentCategoryService.update(contentCategory);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,8 +79,8 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("/getById")
-	public TbBrand getById(Long id){
-		return brandService.getById(id);		
+	public TbContentCategory getById(Long id){
+		return contentCategoryService.getById(id);		
 	}
 	
 	/**
@@ -88,10 +88,10 @@ public class BrandController {
 	 * @param ids
 	 * @return
 	 */
-	@RequestMapping("/deleteById")
+	@RequestMapping("/delete")
 	public Result delete(Long [] ids){
 		try {
-			brandService.deleteById(ids);
+			contentCategoryService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();

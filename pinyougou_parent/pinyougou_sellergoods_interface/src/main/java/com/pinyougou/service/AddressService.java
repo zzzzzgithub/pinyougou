@@ -1,5 +1,5 @@
 package com.pinyougou.service;
-import com.pinyougou.pojo.TbBrand;
+import com.pinyougou.pojo.TbAddress;
 import entity.PageResult;
 
 import java.util.List;
@@ -8,32 +8,32 @@ import java.util.List;
  * @author Steven
  *
  */
-public interface BrandService {
+public interface AddressService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbBrand> findAll();
+	public List<TbAddress> findAll();
 	
 	
 	/**
      * 分页查询列表
      * @return
      */
-    public PageResult<TbBrand> findPage(int pageNum, int pageSize, TbBrand brand);
+    public PageResult<TbAddress> findPage(int pageNum, int pageSize, TbAddress address);
 	
 	
 	/**
 	 * 增加
 	*/
-	public void add(TbBrand brand);
+	public void add(TbAddress address);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbBrand brand);
+	public void update(TbAddress address);
 	
 
 	/**
@@ -41,14 +41,14 @@ public interface BrandService {
 	 * @param id
 	 * @return
 	 */
-	public TbBrand getById(Long id);
+	public TbAddress getById(Long id);
 	
 	
 	/**
 	 * 批量删除
 	 * @param ids
 	 */
-	public void deleteById(Long[] ids);
+	public void delete(Long[] ids);
 
 	
 }

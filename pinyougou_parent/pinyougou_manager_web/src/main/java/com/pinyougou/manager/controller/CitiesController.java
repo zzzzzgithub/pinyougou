@@ -1,8 +1,8 @@
 package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbBrand;
-import com.pinyougou.service.BrandService;
+import com.pinyougou.pojo.TbCities;
+import com.pinyougou.service.CitiesService;
 import entity.PageResult;
 import entity.Result;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,19 +16,19 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping("/brand")
-public class BrandController {
+@RequestMapping("/cities")
+public class CitiesController {
 
 	@Reference
-	private BrandService brandService;
+	private CitiesService citiesService;
 	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbBrand> findAll(){			
-		return brandService.findAll();
+	public List<TbCities> findAll(){			
+		return citiesService.findAll();
 	}
 	
 	
@@ -37,19 +37,19 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("/findPage")
-	public PageResult  findPage(int pageNo,int pageSize,@RequestBody TbBrand brand){			
-		return brandService.findPage(pageNo, pageSize,brand);
+	public PageResult  findPage(int pageNo,int pageSize,@RequestBody TbCities cities){			
+		return citiesService.findPage(pageNo, pageSize,cities);
 	}
 	
 	/**
 	 * 增加
-	 * @param brand
+	 * @param cities
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbBrand brand){
+	public Result add(@RequestBody TbCities cities){
 		try {
-			brandService.add(brand);
+			citiesService.add(cities);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,13 +59,13 @@ public class BrandController {
 	
 	/**
 	 * 修改
-	 * @param brand
+	 * @param cities
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbBrand brand){
+	public Result update(@RequestBody TbCities cities){
 		try {
-			brandService.update(brand);
+			citiesService.update(cities);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,8 +79,8 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("/getById")
-	public TbBrand getById(Long id){
-		return brandService.getById(id);		
+	public TbCities getById(Long id){
+		return citiesService.getById(id);		
 	}
 	
 	/**
@@ -88,10 +88,10 @@ public class BrandController {
 	 * @param ids
 	 * @return
 	 */
-	@RequestMapping("/deleteById")
+	@RequestMapping("/delete")
 	public Result delete(Long [] ids){
 		try {
-			brandService.deleteById(ids);
+			citiesService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
