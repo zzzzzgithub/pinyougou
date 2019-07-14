@@ -1,8 +1,8 @@
 package com.pinyougou.service;
-import java.util.List;
 import com.pinyougou.pojo.TbSeller;
-
 import entity.PageResult;
+
+import java.util.List;
 /**
  * 业务逻辑接口
  * @author Steven
@@ -41,7 +41,7 @@ public interface SellerService {
 	 * @param id
 	 * @return
 	 */
-	public TbSeller getById(Long id);
+	public TbSeller getById(String id);
 	
 	
 	/**

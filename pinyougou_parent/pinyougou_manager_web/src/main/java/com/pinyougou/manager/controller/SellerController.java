@@ -79,7 +79,7 @@ public class SellerController {
 	 * @return
 	 */
 	@RequestMapping("/getById")
-	public TbSeller getById(Long id){
+	public TbSeller getById(String id){
 		return sellerService.getById(id);		
 	}
 	
