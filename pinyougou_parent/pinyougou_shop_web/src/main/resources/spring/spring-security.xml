@@ -53,14 +53,17 @@
     <!-- 认证管理器 -->
     <authentication-manager>
         <authentication-provider user-service-ref="userDetailsService">
+            <!--使用BCrypt加密方式-->
+            <password-encoder ref="passwordEncoder" />
         </authentication-provider>
     </authentication-manager>
     <!--配置权限认证类-->
     <beans:bean id="userDetailsService" class="com.pinyougou.shop.service.UserDetailsServiceImpl"/>
+    <!--配置BCrypt加密工具-->
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <!-- 引用dubbo 服务 -->
     <dubbo:application name="pinyougou-shop-web" />
     <dubbo:registry address="zookeeper://192.168.218.128:2181"/>
     <dubbo:annotation package="com.pinyougou.shop.service" />
 
 </beans:beans>
-
