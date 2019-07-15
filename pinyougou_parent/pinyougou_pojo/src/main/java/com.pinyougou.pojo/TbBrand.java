@@ -1,7 +1,7 @@
 package com.pinyougou.pojo;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "tb_brand")
 public class TbBrand implements Serializable {
@@ -50,6 +50,14 @@ public class TbBrand implements Serializable {
      *
      * @param name 品牌名称
      */
+
+    /**
+     * 添加get方法用于支持前端vue-select获取内容
+     */
+    public String getText() {
+        return this.name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

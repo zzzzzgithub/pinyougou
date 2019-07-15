@@ -1,7 +1,7 @@
 package com.pinyougou.pojo;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "tb_specification")
 public class TbSpecification implements Serializable {
@@ -27,6 +27,13 @@ public class TbSpecification implements Serializable {
      */
     public Long getId() {
         return id;
+    }
+
+    /**
+     * 添加get方法用于支持前端vue-select获取内容
+     */
+    public String getText() {
+        return this.specName;
     }
 
     /**

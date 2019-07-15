@@ -12,11 +12,15 @@ window.onload=function () {
 			//当前页
 			pageNo:1,
 			//声明对象
-			entity:{},
+			entity:{brandIds:[],specIds:[],customAttributeItems:[]},
 			//将要删除的id列表
 			ids:[],
 			//搜索包装对象
-			searchEntity:{}
+			searchEntity:{},
+			//品牌列表
+			brandList:[],
+			//规格列表
+			specList:[]
 		},
 		methods:{
 			//查询所有
@@ -61,6 +65,12 @@ window.onload=function () {
 			getById:function (id) {
 				axios.get("../typeTemplate/getById.do?id="+id).then(function (response) {
 					app.entity = response.data;
+					//把品牌json字符串转换为数组对象
+					app.entity.brandIds = JSON.parse(app.entity.brandIds);
+					//把规格json字符串转换为数组对象
+					app.entity.specIds = JSON.parse(app.entity.specIds);
+					//把扩展属性son字符串转换为数组对象
+					app.entity.customAttributeItems = JSON.parse(app.entity.customAttributeItems);
 				})
 			},
 			//批量删除数据
@@ -75,12 +85,60 @@ window.onload=function () {
 						alert(response.data.message);
 					}
 				})
+			},
+			//查询所有品牌
+			findBrandList:function () {
+				axios.get("/brand/findAll.do").then(function (response) {
+					for(let i = 0; i < response.data.length; i++){
+						delete response.data[i]["firstChar"];
+						delete response.data[i]["name"];
+					}
+					app.brandList = response.data;
+				})
+			},
+			//查询所有规格
+			findSpecList:function () {
+				axios.get("/specification/findAll.do").then(function (response) {
+					for(let i = 0; i < response.data.length; i++){
+						delete response.data[i]["specName"];
+					}
+					app.specList = response.data;
+				})
+			},
+			//添加表格行
+			addTableRow:function () {
+				this.entity.customAttributeItems.push({});
+			},
+			//删除表格行
+			deleteTableRow:function (index) {
+				//splice(删除开始下标,删除的个数)
+				this.entity.customAttributeItems.splice(index, 1);
+			},
+			/**
+			 * 把json数组字符串格式化输出
+			 * @param jsonString 要转换的字符串
+			 * @param key 提取的属性
+			 * @return 提取的结果
+			 */
+			jsonToString:function (jsonString,key) {
+				let list = JSON.parse(jsonString);
+				let result = "";
+				for(let i = 0; i < list.length; i++){
+					if(i != 0){
+						result += ",";
+					}
+					result += list[i][key];
+				}
+				return result;
 			}
 		},
 		//Vue对象初始化后，调用此逻辑
 		created:function () {
 			//调用用分页查询，初始化时从第1页开始查询
 			this.findPage(1);
+
+			this.findBrandList();
+			this.findSpecList();
 		}
 	});
 }
