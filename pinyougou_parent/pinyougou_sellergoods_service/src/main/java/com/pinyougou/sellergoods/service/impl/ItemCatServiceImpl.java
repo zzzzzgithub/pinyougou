@@ -15,43 +15,43 @@ import java.util.List;
 
 /**
  * 业务逻辑实现
- * @author Steven
  *
+ * @author Steven
  */
 @Service
 public class ItemCatServiceImpl implements ItemCatService {
 
-	@Autowired
-	private TbItemCatMapper itemCatMapper;
-	
-	/**
-	 * 查询全部
-	 */
-	@Override
-	public List<TbItemCat> findAll() {
-		return itemCatMapper.select(null);
-	}
+    @Autowired
+    private TbItemCatMapper itemCatMapper;
 
-	/**
-	 * 按分页查询
-	 */
-	@Override
-	public PageResult findPage(int pageNum, int pageSize,TbItemCat itemCat) {
-		PageResult<TbItemCat> result = new PageResult<TbItemCat>();
+    /**
+     * 查询全部
+     */
+    @Override
+    public List<TbItemCat> findAll() {
+        return itemCatMapper.select(null);
+    }
+
+    /**
+     * 按分页查询
+     */
+    @Override
+    public PageResult findPage(int pageNum, int pageSize, TbItemCat itemCat) {
+        PageResult<TbItemCat> result = new PageResult<TbItemCat>();
         //设置分页条件
         PageHelper.startPage(pageNum, pageSize);
 
         //构建查询条件
         Example example = new Example(TbItemCat.class);
         Example.Criteria criteria = example.createCriteria();
-		
-		if(itemCat!=null){			
-						//如果字段不为空
-			if (itemCat.getName()!=null && itemCat.getName().length()>0) {
-				criteria.andLike("name", "%" + itemCat.getName() + "%");
-			}
-	
-		}
+
+        if (itemCat != null) {
+            //如果字段不为空
+            if (itemCat.getName() != null && itemCat.getName().length() > 0) {
+                criteria.andLike("name", "%" + itemCat.getName() + "%");
+            }
+
+        }
 
         //查询数据
         List<TbItemCat> list = itemCatMapper.selectByExample(example);
@@ -61,43 +61,44 @@ public class ItemCatServiceImpl implements ItemCatService {
         //获取总页数
         PageInfo<TbItemCat> info = new PageInfo<TbItemCat>(list);
         result.setPages(info.getPages());
-		
-		return result;
-	}
 
-	/**
-	 * 增加
-	 */
-	@Override
-	public void add(TbItemCat itemCat) {
-		itemCatMapper.insertSelective(itemCat);		
-	}
+        return result;
+    }
 
-	
-	/**
-	 * 修改
-	 */
-	@Override
-	public void update(TbItemCat itemCat){
-		itemCatMapper.updateByPrimaryKeySelective(itemCat);
-	}	
-	
-	/**
-	 * 根据ID获取实体
-	 * @param id
-	 * @return
-	 */
-	@Override
-	public TbItemCat getById(Long id){
-		return itemCatMapper.selectByPrimaryKey(id);
-	}
+    /**
+     * 增加
+     */
+    @Override
+    public void add(TbItemCat itemCat) {
+        itemCatMapper.insertSelective(itemCat);
+    }
 
-	/**
-	 * 批量删除
-	 */
-	@Override
-	public void delete(Long[] ids) {
-		//数组转list
+
+    /**
+     * 修改
+     */
+    @Override
+    public void update(TbItemCat itemCat) {
+        itemCatMapper.updateByPrimaryKeySelective(itemCat);
+    }
+
+    /**
+     * 根据ID获取实体
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public TbItemCat getById(Long id) {
+        return itemCatMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 批量删除
+     */
+    @Override
+    public void delete(Long[] ids) {
+        //数组转list
         List longs = Arrays.asList(ids);
         //构建查询条件
         Example example = new Example(TbItemCat.class);
@@ -106,7 +107,14 @@ public class ItemCatServiceImpl implements ItemCatService {
 
         //跟据查询条件删除数据
         itemCatMapper.deleteByExample(example);
-	}
-	
-	
+    }
+
+    @Override
+    public List<TbItemCat> findByParentId(Long parentId) {
+        //组装查询条件
+        TbItemCat where = new TbItemCat();
+        where.setParentId(parentId);
+        List<TbItemCat> catList = itemCatMapper.select(where);
+        return catList;
+    }
 }
