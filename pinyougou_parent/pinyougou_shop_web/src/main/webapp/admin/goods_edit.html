@@ -24,8 +24,7 @@
     <!--引入Vue相关JS-->
     <script src="../plugins/Vue/vuejs-2.5.16.js"></script>
     <script src="../plugins/Vue/axios-0.18.0.js"></script>
-    <!--引入Vue前端逻辑JS-->
-    <script src="../js/controller/goodsController.js"></script>
+
 
 </head>
 
@@ -68,17 +67,28 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <select class="form-control">
+                                            <select class="form-control" v-model="entity.goods.category1Id">
+                                                <option v-for="itemCat in itemCatList1" :value="itemCat.id">
+                                                    {{itemCat.name}}
+                                                </option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control select-sm"></select>
+                                            <select class="form-control select-sm" v-model="entity.goods.category2Id">
+                                                <option v-for="itemCat in itemCatList2" :value="itemCat.id">
+                                                    {{itemCat.name}}
+                                                </option>
+                                            </select>
                                         </td>
                                         <td>
-                                            <select class="form-control select-sm"></select>
+                                            <select class="form-control select-sm" v-model="entity.goods.category3Id">
+                                                <option v-for="itemCat in itemCatList3" :value="itemCat.id">
+                                                    {{itemCat.name}}
+                                                </option>
+                                            </select>
                                         </td>
                                         <td>
-                                            模板ID:19
+                                            模板ID:{{entity.goods.typeTemplateId}}
                                         </td>
                                     </tr>
                                 </table>
@@ -94,7 +104,11 @@
 
                             <div class="col-md-2 title">品牌</div>
                             <div class="col-md-10 data">
-                                <select class="form-control"></select>
+                                <select style="width: auto;" class="form-control select-sm"
+                                        v-model="entity.goods.brandId">
+                                    <option v-for="brand in brandIds" :value="brand.id">{{brand.text}}</option>
+                                </select>
+
                             </div>
 
                             <div class="col-md-2 title">副标题</div>
@@ -139,7 +153,8 @@
                         <div class="row data-type">
                             <!-- 颜色图片 -->
                             <div class="btn-group">
-                                <button @click="image_entity={url:''}" type="button" class="btn btn-default" title="新建" data-target="#uploadModal"
+                                <button @click="image_entity={url:''}" type="button" class="btn btn-default" title="新建"
+                                        data-target="#uploadModal"
                                         data-toggle="modal"><i class="fa fa-file-o"></i> 新建
                                 </button>
 
@@ -147,7 +162,7 @@
 
                             <table class="table table-bordered table-striped table-hover dataTable">
                                 <thead>
-                                <tr >
+                                <tr>
 
                                     <th class="sorting">颜色</th>
                                     <th class="sorting">图片</th>
@@ -162,7 +177,8 @@
                                         <img alt="" src="" width="100px" height="100px">
                                     </td>
                                     <td>
-                                        <button @click="remove_image_entity(index)" type="button" class="btn btn-default" title="删除"><i
+                                        <button @click="remove_image_entity(index)" type="button"
+                                                class="btn btn-default" title="删除"><i
                                                 class="fa fa-trash-o"></i> 删除
                                         </button>
                                     </td>
@@ -177,16 +193,10 @@
                     <!--扩展属性-->
                     <div class="tab-pane" id="customAttribute">
                         <div class="row data-type">
-                            <div>
-                                <div class="col-md-2 title">扩展属性1</div>
+                            <div v-for="attr in entity.goodsDesc.customAttributeItems">
+                                <div class="col-md-2 title">{{attr.text}}</div>
                                 <div class="col-md-10 data">
-                                    <input class="form-control" placeholder="扩展属性1">
-                                </div>
-                            </div>
-                            <div>
-                                <div class="col-md-2 title">扩展属性2</div>
-                                <div class="col-md-10 data">
-                                    <input class="form-control" placeholder="扩展属性2">
+                                    <input class="form-control" :placeholder="attr.text">
                                 </div>
                             </div>
                         </div>
@@ -205,42 +215,18 @@
                         <div>
 
                             <div class="row data-type">
-
-                                <div>
-                                    <div class="col-md-2 title">屏幕尺寸</div>
+                                <div v-for="spec in specIds">
+                                    <div class="col-md-2 title">{{spec.text}}</div>
                                     <div class="col-md-10 data">
-					                               
-					                            <span>
-					                            	<input type="checkbox">4.0
+					                            <span v-for="option in spec.options">
+					                            	<input @click="updateSpecAttribute($event,spec.text,option.optionName)"
+                                                           type="checkbox">{{option.optionName}}
 					                            </span>
-                                        <span>
-					                            	<input type="checkbox">4.5
-					                            </span>
-                                        <span>
-					                            	<input type="checkbox">5.0
-					                            </span>
-
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="col-md-2 title">网络制式</div>
-                                    <div class="col-md-10 data">
-					                               
-					                            <span>
-					                            	<input type="checkbox">2G
-					                            </span>
-                                        <span>
-					                            	<input type="checkbox">3G
-					                            </span>
-                                        <span>
-					                            	<input type="checkbox">4G
-					                            </span>
-
                                     </div>
                                 </div>
 
                             </div>
-
+                            用户勾中的规格列表：{{entity.goodsDesc.specificationItems}}<br>
 
                             <div class="row data-type">
                                 <table class="table table-bordered table-striped table-hover dataTable">
@@ -399,7 +385,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button @click="add_image_entity()" class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+                    <button @click="add_image_entity()" class="btn btn-success" data-dismiss="modal" aria-hidden="true">
+                        保存
+                    </button>
                     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
                 </div>
             </div>
