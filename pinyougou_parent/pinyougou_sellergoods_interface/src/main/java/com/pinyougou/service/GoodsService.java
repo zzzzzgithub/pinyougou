@@ -17,40 +17,46 @@ public interface GoodsService {
 	 * @return
 	 */
 	public List<TbGoods> findAll();
-	
-	
+
+
 	/**
      * 分页查询列表
      * @return
      */
     public PageResult<TbGoods> findPage(int pageNum, int pageSize, TbGoods goods);
-	
-	
+
+
 	/**
 	 * 增加
 	*/
 	public void add(Goods goods);
-	
-	
+
+
 	/**
 	 * 修改
 	 */
-	public void update(TbGoods goods);
-	
+	public void update(Goods goods);
+
 
 	/**
 	 * 根据ID获取实体
 	 * @param id
 	 * @return
 	 */
-	public TbGoods getById(Long id);
-	
-	
+	public Goods getById(Long id);
+
+
 	/**
 	 * 批量删除
 	 * @param ids
 	 */
 	public void delete(Long[] ids);
+	/**
+	 * 跟据id列表，更新状态
+	 * @param ids
+	 * @param status
+	 */
+	public void updateStatus(Long[] ids,String status);
 
-	
+
 }

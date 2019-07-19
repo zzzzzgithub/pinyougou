@@ -62,6 +62,7 @@ public interface ItemCatService {
      * @param parentId
      * @return
      */
-    public List<TbItemCat> findByParentId(Long parentId);
+    public List<TbItemCat>
+    findByParentId(Long parentId);
 
 }

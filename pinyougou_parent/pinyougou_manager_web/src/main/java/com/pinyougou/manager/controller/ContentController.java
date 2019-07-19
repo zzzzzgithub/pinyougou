@@ -1,15 +1,15 @@
 package com.pinyougou.manager.controller;
+import java.util.List;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbContent;
-import com.pinyougou.service.ContentService;
-import entity.PageResult;
-import entity.Result;
+import com.pinyougou.content.service.ContentService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.pinyougou.pojo.TbContent;
 
-import java.util.List;
+import entity.PageResult;
+import entity.Result;
 /**
  * 请求处理器
  * @author Steven

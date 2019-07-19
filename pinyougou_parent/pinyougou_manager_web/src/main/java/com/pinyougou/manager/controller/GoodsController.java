@@ -2,6 +2,7 @@ package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbGoods;
+import com.pinyougou.pojogroup.Goods;
 import com.pinyougou.service.GoodsService;
 import entity.PageResult;
 import entity.Result;
@@ -69,7 +70,7 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("/update")
-    public Result update(@RequestBody TbGoods goods) {
+    public Result update(@RequestBody Goods goods) {
         try {
             goodsService.update(goods);
             return new Result(true, "修改成功");
@@ -86,7 +87,7 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("/getById")
-    public TbGoods getById(Long id) {
+    public Goods getById(Long id) {
         return goodsService.getById(id);
     }
 
@@ -104,6 +105,24 @@ public class GoodsController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "删除失败");
+        }
+    }
+
+    /**
+     * 跟据id列表，更新状态
+     *
+     * @param ids
+     * @param status
+     * @return
+     */
+    @RequestMapping("updateStatus")
+    public Result updateStatus(Long[] ids, String status) {
+        try {
+            goodsService.updateStatus(ids, status);
+            return new Result(true, "操作成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(true, "操作失败!");
         }
     }
 
