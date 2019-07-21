@@ -87,7 +87,9 @@
                                     <div class="input-append">
                                         <input v-model="searchMap.keyword" type="text" id="autocomplete" type="text"
                                                class="input-error input-xxlarge"/>
-                                        <button @click="search()" class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+                                        <button @click="search()" class="sui-btn btn-xlarge btn-danger" type="button">
+                                            搜索
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -174,8 +176,8 @@
             <div class="clearfix selector">
                 <div class="type-wrap">
                     <div class="fl key">商品分类</div>
-                    <div class="fl value">
-                        <a href="#">手机</a> <a href="#">电视</a>
+                    <div class="fl value" v-for="category in resultMap.categoryList">
+                        <a @click="addSearchItem('category',category)" href="javascript:;">{{category}}</a>
                     </div>
                     <div class="fl ext"></div>
                 </div>
@@ -371,8 +373,8 @@
                                         <i>{{item.price}}</i>
                                     </strong>
                                 </div>
-                                <div class="attr">
-                                    <em>{{item.title}}</em>
+                                <div class="attr" v-html="item.title">
+                                    <!--<em>{{item.title}}</em>-->
                                 </div>
                                 <div class="cu">
                                     <em></em>
