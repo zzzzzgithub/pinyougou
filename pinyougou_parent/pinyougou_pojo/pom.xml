@@ -17,6 +17,14 @@
             <artifactId>persistence-api</artifactId>
             <version>1.0</version>
         </dependency>
+        <!--spring-es-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <!--由于spring-es这个包依赖很多，所以我们只在编译和测试的时候用-->
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
 
