@@ -9,6 +9,7 @@ import com.pinyougou.pojo.TbItemCat;
 import com.pinyougou.service.ItemCatService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +24,10 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     @Autowired
     private TbItemCatMapper itemCatMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 
     /**
      * 查询全部
@@ -115,6 +120,11 @@ public class ItemCatServiceImpl implements ItemCatService {
         TbItemCat where = new TbItemCat();
         where.setParentId(parentId);
         List<TbItemCat> catList = itemCatMapper.select(where);
+        //将商品分类数据放入redis,以分类名称作为key,以模板id作为值
+        List<TbItemCat> itemCats = findAll();
+        for (TbItemCat itemCat : itemCats) {
+            redisTemplate.boundHashOps("itemCat").put(itemCat.getName(), itemCat.getTypeId());
+        }
         return catList;
     }
 }

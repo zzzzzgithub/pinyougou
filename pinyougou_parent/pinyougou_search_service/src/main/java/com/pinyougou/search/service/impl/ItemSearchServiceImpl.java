@@ -23,6 +23,7 @@ import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,12 +40,22 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     public Map search(Map searchMap) {
         //查询列表
         Map map = searchItemList(searchMap);
         //2.跟据查询条件-分组查询商品分类列表
         searchCategoryList(searchMap, map);
+        //3.根据商品分类名称查询品牌和规格信息
+        List<String> categoryList = (List<String>) map.get("categoryList");
+            if (categoryList != null && categoryList.size() > 0) {
+            //默认查询第一个分类的品牌和规格
+            this.searchBrandAndSpecList(categoryList.get(0), map);
+
+        }
         return map;
 
     }
@@ -164,6 +175,24 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
         //8.返回分类数据列表-map.put("categoryList", categoryList)
         map.put("categoryList", categoryList);
+    }
 
+    /**
+     * 跟据商品分类名称查询商品品牌与规格列表
+     *
+     * @param category 商品分类名称
+     * @param map      查询结果集
+     */
+    private void searchBrandAndSpecList(String category, Map map) {
+        //根据商品分类查询模板typeId
+        Long typeId = (Long) redisTemplate.boundHashOps("itemCat").get(category);
+        //根据typeId查询规格和品牌信息
+        if (typeId != null) {
+            List brandList = (List) redisTemplate.boundHashOps("brandList").get(typeId);
+            map.put("brandList", brandList);
+
+            List specList = (List) redisTemplate.boundHashOps("specList").get(typeId);
+            map.put("specList", specList);
+        }
     }
 }
