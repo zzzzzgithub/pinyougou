@@ -4,8 +4,10 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.pinyougou.search.service.ItemSearchService;
 import entity.EsItem;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -50,12 +52,17 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         //2.跟据查询条件-分组查询商品分类列表
         searchCategoryList(searchMap, map);
         //3.根据商品分类名称查询品牌和规格信息
-        List<String> categoryList = (List<String>) map.get("categoryList");
+        String category = searchMap.get("category") == null ? "" : searchMap.get("category").toString();
+        //如果用户没有传入商品分类
+        if (category.trim().length() < 1) {
+            //默认使用查询第一个分类的品牌和规格
+            List<String> categoryList = (List<String>) map.get("categoryList");
             if (categoryList != null && categoryList.size() > 0) {
-            //默认查询第一个分类的品牌和规格
-            this.searchBrandAndSpecList(categoryList.get(0), map);
-
+                category = categoryList.get(0);
+            }
         }
+        //查询商品品牌与规格列表
+        this.searchBrandAndSpecList(category, map);
         return map;
 
     }
@@ -89,6 +96,33 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 builder.withQuery(QueryBuilders.multiMatchQuery(keyword, "title", "category", "brand", "seller"));
             }
         }
+        //创建BoolQueryBuilder,用于组装多个查询条件
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //3.2商品分类搜索
+        String category = searchMap.get("category") == null ? "" : searchMap.get("category").toString();
+        if (category.trim().length() > 0) {
+            //商品分类查询不能分词,所以用WildcardQuery而不是matchQuery
+            boolQueryBuilder.must(QueryBuilders.wildcardQuery("category", category));
+        }
+        //3.3品牌过滤
+        String brand = searchMap.get("brand") == null ? "" : searchMap.get("brand").toString();
+        if (brand.trim().length() > 0) {
+            //品牌分类查询不能分词,所以用WildcardQuery而不是matchQuery
+            boolQueryBuilder.must(QueryBuilders.wildcardQuery("brand", brand));
+        }
+        //3.4规格搜索-前端传入spec:{'网络':'移动4g','机身内存':'64g'}
+        String spec = searchMap.get("spec") == null ? "" : searchMap.get("spec").toString();
+        if (spec.trim().length() > 0) {
+            //先把json串转成map
+            Map<String, String> specMap = JSON.parseObject(spec, Map.class);
+            for (Object key : searchMap.keySet()) {
+                //嵌套域的name='spec.域名.keyword'
+                String name = "spec." + key + "keyword";
+                boolQueryBuilder.must(QueryBuilders.nestedQuery("spec", QueryBuilders.wildcardQuery(name, specMap.get(key)), ScoreMode.Max));
+            }
+        }
+        //将BooleQueryBuilder设置为过滤条件
+        builder.withFilter(boolQueryBuilder);
         //4、获取NativeSearchQuery搜索条件对象-builder.build()
         NativeSearchQuery query = builder.build();
         //5.查询数据-esTemplate.queryForPage(条件对象,搜索结果对象)
