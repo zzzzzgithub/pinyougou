@@ -9,6 +9,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -108,18 +109,36 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         String brand = searchMap.get("brand") == null ? "" : searchMap.get("brand").toString();
         if (brand.trim().length() > 0) {
             //品牌分类查询不能分词,所以用WildcardQuery而不是matchQuery
-            boolQueryBuilder.must(QueryBuilders.wildcardQuery("brand", brand));
+            boolQueryBuilder.must(QueryBuilders.termQuery("brand", brand));
         }
         //3.4规格搜索-前端传入spec:{'网络':'移动4g','机身内存':'64g'}
-        String spec = searchMap.get("spec") == null ? "" : searchMap.get("spec").toString();
-        if (spec.trim().length() > 0) {
-            //先把json串转成map
+        String spec = searchMap.get("spec") == null ? "" : searchMap.get("spec").toString().trim();
+        if (spec.length() > 0) {
+            //spec: {'网络'：'移动4G','机身内存':'64G'}转成map对象
             Map<String, String> specMap = JSON.parseObject(spec, Map.class);
-            for (Object key : searchMap.keySet()) {
-                //嵌套域的name='spec.域名.keyword'
-                String name = "spec." + key + "keyword";
+            for (String key : specMap.keySet()) {
+                String name = "spec." + key + ".keyword";
+
+                //追加嵌套域查询条件-nestedQuery(嵌套域的访问根路径,查询条件,排序方式,得分最高方式)
                 boolQueryBuilder.must(QueryBuilders.nestedQuery("spec", QueryBuilders.wildcardQuery(name, specMap.get(key)), ScoreMode.Max));
             }
+        }
+        //3.5 价格区间搜索-前端传入price:0-500|500-1000....3000-*
+        String price = searchMap.get("price") == null ? "" : searchMap.get("price").toString().trim();
+        if (price.length() > 0) {
+            //以中划线分隔价格:[0-500]
+            String[] split = price.split("-");
+            //价格表达式:0<=price<=500;
+            RangeQueryBuilder priceRange = QueryBuilders.rangeQuery("price");
+            //整体条件:开始价格<=price<=结束价格
+            if (!"0".equals(split[0])) {
+                priceRange.gte(split[0]);
+            }
+            if (!"*".equals(split[1])) {
+                priceRange.lte(split[1]);
+            }
+            //追加过滤条件
+            boolQueryBuilder.must(priceRange);
         }
         //将BooleQueryBuilder设置为过滤条件
         builder.withFilter(boolQueryBuilder);
