@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.pinyougou.search.service.ItemSearchService;
 import entity.EsItem;
+import org.springframework.data.domain.Sort;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
@@ -18,6 +19,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
@@ -144,6 +146,27 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         builder.withFilter(boolQueryBuilder);
         //4、获取NativeSearchQuery搜索条件对象-builder.build()
         NativeSearchQuery query = builder.build();
+        //4.1分页搜索
+        //pageNo当前页
+        Integer pageNo = searchMap.get("pageNo") == null ? 1 : new Integer(searchMap.get("pageNo").toString());
+        //pageSize每页显示几条
+        Integer pageSize = searchMap.get("pageSize") == null ? 20 : new Integer(searchMap.get("pageSize").toString());
+        //设置分页参数 PageRequest.of(当前页,从0开始,每页查询几条)
+        query.setPageable(PageRequest.of(pageNo - 1, pageSize));
+        //4.2排序查询
+        //sort排序方式 asc倒序 desc升序
+        String sort = searchMap.get("sort") == null ? "" : searchMap.get("sort").toString();
+        //sortField 排序业务域
+        String sortField = searchMap.get("sortField") == null ? "" : searchMap.get("sortField").toString();
+        if (sort.length() > 0 && sortField.length() > 0) {
+            Sort sortWhere = null;
+            if ("ASC".equals(sort.toUpperCase())) {
+                sortWhere = new Sort(Sort.Direction.ASC, sortField);
+            } else {
+                sortWhere = new Sort(Sort.Direction.DESC, sortField);
+            }
+            query.addSort(sortWhere);
+        }
         //5.查询数据-esTemplate.queryForPage(条件对象,搜索结果对象)
         //AggregatedPage<EsItem> page = elasticsearchTemplate.queryForPage(nativeSearchQuery, EsItem.class);
         //h3.高亮数据读取-AggregatedPage<EsItem> page = elasticsearchTemplate.queryForPage(query, EsItem.class, new SearchResultMapper(){})
@@ -181,6 +204,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             }
         });
         map.put("rows", page.getContent());
+        //返回分页数据
+        map.put("total", page.getTotalElements());
+        map.put("totalPages", page.getTotalPages());
         return map;
     }
 

@@ -187,7 +187,7 @@
                     </div>
                     <div class="fl ext"></div>
                 </div>
-                <div class="type-wrap logo" v-if="searchMap.brand == ''">
+                <div class="type-wrap logo" v-if="searchMap.brand == '' && keywordsIsBrand()">
                     <div class="fl key brand">品牌</div>
                     <div class="value logos">
                         <ul class="logo-list">
@@ -283,7 +283,10 @@
                                 <a href="#">评价</a>
                             </li>
                             <li>
-                                <a href="#">价格</a>
+                                <a href="javascript:;" @click="sortSearch('asc','price')">价格↑</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" @click="sortSearch('desc','price')">价格↓</a>
                             </li>
                         </ul>
                     </div>
@@ -354,19 +357,17 @@
 
                 <div class="manu">
                     <p>
-                        <span class="disabled">«上一页</span>
-                        <a class="current">1</a>
-                        <a>2</a>
-                        <a>3</a>
-                        <a>4</a>
-                        <a>5</a>
-                        <span>...</span>
-                        <span class="next">下一页»</span>
-                        <span>共 0 页&nbsp;</span>
+                        <span class="disabled" @click="queryByPage(searchMap.pageNo - 1)">«上一页</span>
+                        <span v-if="firstDot">...</span>
+                        <a :class="p==searchMap.pageNo ? 'current' : ''" v-for="p in pageLable" @click="queryByPage(p)">{{p}}</a>
+                        <span v-if="lastDot">...</span>
+                        <span class="next" @click="queryByPage(searchMap.pageNo + 1)">下一页»</span>
+                        <span>共{{resultMap.totalPages}} 页&nbsp;</span>
                         <span>
                           到第
-                          <input type="text" style="width: 50px;" class="page-num">
-                          页 <button class="page-confirm" href="javascript:;">确定</button>
+                          <input type="text" style="width: 50px;" class="page-num" v-model="searchMap.pageNo">
+                          页 <button class="page-confirm" @click="queryByPage(searchMap.pageNo)"
+                                    href="javascript:;">确定</button>
                         </span>
                     </p>
                 </div>
