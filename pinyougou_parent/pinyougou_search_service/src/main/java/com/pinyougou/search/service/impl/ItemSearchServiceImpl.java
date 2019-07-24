@@ -2,6 +2,7 @@ package com.pinyougou.search.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
+import com.pinyougou.search.dao.ItemDao;
 import com.pinyougou.search.service.ItemSearchService;
 import entity.EsItem;
 import org.springframework.data.domain.Sort;
@@ -47,6 +48,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private ItemDao itemDao;
 
     @Override
     public Map search(Map searchMap) {
@@ -68,6 +71,23 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         this.searchBrandAndSpecList(category, map);
         return map;
 
+    }
+
+    @Override
+    public void importList(List list) {
+        itemDao.saveAll(list);
+
+    }
+
+    /**
+     * 跟据id列表删除索引
+     *
+     * @param goodsIdList
+     */
+
+    @Override
+    public void deleteByGoodsId(Long[] goodsIdList) {
+        itemDao.deleteByGoodsIdIn(goodsIdList);
     }
 
     private Map searchItemList(Map searchMap) {

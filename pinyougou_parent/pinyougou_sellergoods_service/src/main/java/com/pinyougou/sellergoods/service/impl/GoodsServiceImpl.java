@@ -133,22 +133,23 @@ public class GoodsServiceImpl implements GoodsService {
 
     /**
      * 保存商品sku列表
+     *
      * @param goods
      */
     private void saveItems(Goods goods) {
         //如果不启用规格
-        if("0".equals(goods.getGoods().getIsEnableSpec())) {
+        if ("0".equals(goods.getGoods().getIsEnableSpec())) {
             //创建默认的sku信息
-            TbItem item=new TbItem();
+            TbItem item = new TbItem();
             item.setTitle(goods.getGoods().getGoodsName());//商品KPU+规格描述串作为SKU名称
-            item.setPrice( goods.getGoods().getPrice() );//价格
+            item.setPrice(goods.getGoods().getPrice());//价格
             item.setStatus("1");//状态
             item.setIsDefault("1");//是否默认
             item.setNum(99999);//库存数量
             item.setSpec("{}");
-            setItemValus(goods,item);
+            setItemValus(goods, item);
             itemMapper.insertSelective(item);
-        }else{
+        } else {
             for (TbItem item : goods.getItemList()) {
                 String title = goods.getGoods().getGoodsName();
                 //{"机身内存":"16G","网络":"移动4G"}
@@ -280,6 +281,24 @@ public class GoodsServiceImpl implements GoodsService {
         criteria.andIn("id", longs);
         //执行更新
         goodsMapper.updateByExampleSelective(record, where);
+    }
+
+    /**
+     * 跟据SPU-ID列表和状态，查询SKU列表
+     *
+     * @param goodsIds
+     * @param status
+     * @return
+     */
+
+    @Override
+    public List<TbItem> findItemListByGoodsIdsAndStatus(Long[] goodsIds, String status) {
+        Example example = new Example(TbItem.class);
+        Example.Criteria criteria = example.createCriteria();
+        List longs = Arrays.asList(goodsIds);
+        criteria.andIn("goodsId", longs);
+        List<TbItem> itemList = itemMapper.selectByExample(example);
+        return itemList;
     }
 
 }

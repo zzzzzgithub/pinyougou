@@ -132,17 +132,63 @@ window.onload = function () {
                  * @param sort 排序方式 asc|desc
                  * @param sortField 域名
                  */
-                sortSearch:function (sort,sortField) {
+                sortSearch: function (sort, sortField) {
                     this.searchMap.sort = sort;
                     this.searchMap.sortField = sortField;
                     //刷新数据
                     this.search();
+                },
+                /**
+                 * 解析一个url中所有的参数
+                 * @return {参数名:参数值}
+                 */
+                /**
+                 * 解析一个url中所有的参数
+                 * @return {参数名:参数值}
+                 */
+                getUrlParam: function () {
+                    //url上的所有参数
+                    var paramMap = {};
+                    //获取当前页面的url
+                    var url = document.location.toString();
+                    //获取问号后面的参数
+                    var arrObj = url.split("?");
+                    //如果有参数
+                    if (arrObj.length > 1) {
+                        //解析问号后的参数
+                        var arrParam = arrObj[1].split("&");
+                        //读取到的每一个参数,解析成数组
+                        var arr;
+                        for (var i = 0; i < arrParam.length; i++) {
+                            //以等于号解析参数：[0]是参数名，[1]是参数值
+                            arr = arrParam[i].split("=");
+                            if (arr != null) {
+                                paramMap[arr[0]] = arr[1];
+                            }
+                        }
+                    }
+                    return paramMap;
+                },
+                //加载查询字符串
+                loadkeywords: function () {
+                    //读取参数
+                    let keyword = this.getUrlParam()['keyword'];
+                    if (keyword != null) {
+                        //decodeURI-把url的中文转换回来
+                        this.searchMap.keyword = decodeURI(keyword);
+                        console.log(this.searchMap.keyword);
+                    }
+                    //查询商品
+                    this.search();
                 }
             }
-            ,
+                ,
             created: function () {
                 //初始化查询所有商品
                 this.search();
+                //读取关键字查询
+                this.loadkeywords();
+
             }
         })
     ;
