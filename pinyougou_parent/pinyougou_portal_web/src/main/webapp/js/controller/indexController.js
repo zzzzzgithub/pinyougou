@@ -3,7 +3,8 @@ window.onload = function () {
         el: "#app",
         data: {
             //广告列表
-            contentList: []
+            contentList: [],
+            keyword: ''
         },
         methods: {
             //查询广告列表
@@ -13,6 +14,10 @@ window.onload = function () {
                     //app.contentList[1] = response.data;
                     app.$set(app.contentList, 1, response.data)
                 })
+            },
+            //跳转首页
+            search: function () {
+                window.location.href = "http://localhost:8084/search.html?keyword=" + this.keyword;
             }
         },
         //初始化调用

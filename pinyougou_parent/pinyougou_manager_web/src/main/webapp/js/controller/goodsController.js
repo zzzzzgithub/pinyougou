@@ -20,7 +20,7 @@ window.onload = function () {
             //商品状态
             status: ['未审核', '已审核', '审核未通过', '关闭'],
             //商品分类对象
-            itemCatMap: {1: "手机"}
+            itemCatMap: {}
 
         },
         methods: {
@@ -86,11 +86,11 @@ window.onload = function () {
                 axios.get("/itemCat/findAll.do").then(function (response) {
                     //组装商品分类数组[id:商品分类名称]
                     for (var i = 0; i < response.data.length; i++) {
-                        //获取id
-                        var key = response.data[i].id;
-                        //获取分类名字
-                        var value = response.data[i].name;
-                        app.itemCatMap[key] = value;
+                        // //获取id
+                        // var key = response.data[i].id;
+                        // //获取分类名字
+                        // var value = response.data[i].name;
+                        app.$set(app.itemCatMap, response.data[i].id, response.data[i].name)
                     }
                 })
             },
