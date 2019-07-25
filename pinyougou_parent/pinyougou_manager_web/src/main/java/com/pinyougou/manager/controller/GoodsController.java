@@ -2,6 +2,7 @@ package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
+import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
@@ -33,6 +34,9 @@ public class GoodsController {
 
     @Reference
     private ItemSearchService itemSearchService;
+    @Reference
+    private ItemPageService itemPageService;
+
 
     /**
      * 返回全部列表
@@ -150,6 +154,10 @@ public class GoodsController {
                 }
                 //更新索引库
                 itemSearchService.importList(esItemList);
+                //生成商品静态详情页
+                for (Long id : ids) {
+                    itemPageService.genItemHtml(id);
+                }
             }
             return new Result(true, "操作成功!");
         } catch (Exception e) {
@@ -157,5 +165,16 @@ public class GoodsController {
             return new Result(false, "操作失败!");
         }
     }
+
+    /**
+     * 生成静态页（测试）
+     *
+     * @param goodsId
+     */
+    @RequestMapping("/genHtml")
+    public boolean genHtml(Long goodsId) {
+        return itemPageService.genItemHtml(goodsId);
+    }
+
 
 }

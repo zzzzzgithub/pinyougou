@@ -197,7 +197,7 @@
                             <div v-for="attr in entity.goodsDesc.customAttributeItems">
                                 <div class="col-md-2 title">{{attr.text}}</div>
                                 <div class="col-md-10 data">
-                                    <input class="form-control" :placeholder="attr.text">
+                                    <input v-model="attr.value" class="form-control" :placeholder="attr.text">
                                 </div>
                             </div>
                         </div>
@@ -220,7 +220,7 @@
                                 <div v-for="spec in specIds">
                                     <div class="col-md-2 title">{{spec.text}}</div>
                                     <div class="col-md-10 data">
-					                            <span v-for="option in spec.options">
+					                           <span v-for="option in spec.options">
 					                            	<input :checked="checkAttributeValue(spec.text,option.optionName)"
                                                            @click="updateSpecAttribute($event,spec.text,option.optionName);createItemList()"
                                                            type="checkbox">{{option.optionName}}
