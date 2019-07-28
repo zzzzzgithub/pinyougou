@@ -2,16 +2,17 @@ package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
-import com.pinyougou.page.service.ItemPageService;
+import com.pinyougou.manager.utils.MessageSender;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
-import com.pinyougou.search.service.ItemSearchService;
 import com.pinyougou.service.GoodsService;
 import entity.EsItem;
+import entity.MessageInfo;
 import entity.PageResult;
 import entity.Result;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,10 +33,12 @@ public class GoodsController {
     @Reference
     private GoodsService goodsService;
 
-    @Reference
-    private ItemSearchService itemSearchService;
-    @Reference
-    private ItemPageService itemPageService;
+    //@Reference
+    //private ItemSearchService itemSearchService;
+    //@Reference
+    //private ItemPageService itemPageService;
+    @Autowired
+    private MessageSender messageSender;
 
 
     /**
@@ -116,7 +119,16 @@ public class GoodsController {
         try {
             goodsService.delete(ids);
             //删除索引库
-            itemSearchService.deleteByGoodsId(ids);
+            //itemSearchService.deleteByGoodsId(ids);
+            //发送MQ消息到RocketMQ中-新增操作
+            MessageInfo info = new MessageInfo(
+                    MessageInfo.METHOD_DELETE,//操作方式-删除
+                    ids,//发送内容
+                    "topic-goods", //主题
+                    "tag-goods-add",//标签
+                    "key-goods-add"//keys
+            );
+            messageSender.sendMessage(info);
             return new Result(true, "删除成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,12 +164,21 @@ public class GoodsController {
                     esItem.setSpec(specMap);
                     esItemList.add(esItem);
                 }
-                //更新索引库
+               /* //更新索引库
                 itemSearchService.importList(esItemList);
                 //生成商品静态详情页
                 for (Long id : ids) {
                     itemPageService.genItemHtml(id);
-                }
+                }*/
+                //发送MQ消息到RocketMQ中-新增操作
+                MessageInfo info = new MessageInfo(
+                        MessageInfo.METHOD_ADD,//操作方式,新增
+                        esItemList,//发送内容
+                        "topic-goods",//主题
+                        "tag-goods-add",//标签
+                        "keys-goods-add"//keys
+                );
+                messageSender.sendMessage(info);
             }
             return new Result(true, "操作成功!");
         } catch (Exception e) {
@@ -171,10 +192,10 @@ public class GoodsController {
      *
      * @param goodsId
      */
-    @RequestMapping("/genHtml")
-    public boolean genHtml(Long goodsId) {
-        return itemPageService.genItemHtml(goodsId);
-    }
+    //@RequestMapping("/genHtml")
+    //public boolean genHtml(Long goodsId) {
+    //    return itemPageService.genItemHtml(goodsId);
+    //}
 
 
 }

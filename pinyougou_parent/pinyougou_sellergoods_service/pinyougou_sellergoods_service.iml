@@ -88,5 +88,6 @@
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.0.9" level="project" />
     <orderEntry type="module" module-name="pinyougou_pojo" />
     <orderEntry type="module" module-name="pinyougou_sellergoods_interface" />
+    <orderEntry type="module" module-name="pinyougou_user_interface" />
   </component>
 </module>

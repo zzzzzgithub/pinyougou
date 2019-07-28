@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--创建一个DefaultMQPushConsumer对象，用于消息接收-->
+    <bean id="rocketmqConsumer" class="org.apache.rocketmq.client.consumer.DefaultMQPushConsumer" init-method="start" destroy-method="shutdown">
+        <!--设置消费者组名-->
+        <property name="consumerGroup" value="pinyougou-search-service-consumer-group"/>
+        <!--设置NameServer地址-->
+        <property name="namesrvAddr" value="127.0.0.1:9876"/>
+        <!--设置消息的主题(与生产者要一至)与标签(*号代表所有)-->
+        <property name="subscription">
+            <map>
+                <!--指定对应主体和标签-->
+                <entry key="topic-goods">
+                    <!--标签(*号代表所有)-->
+                    <value>*</value>
+                </entry>
+            </map>
+        </property>
+        <!--
+            消息模式设置
+            广播模式：BROADCASTING
+            集群模式：CLUSTERING
+        -->
+        <property name="messageModel" value="CLUSTERING"/>
+        <!--指定消息监听器，用于读取消息-->
+        <property name="messageListener" ref="messageListener"/>
+    </bean>
+    <!--消息监听器-->
+    <bean id="messageListener" class="com.pinyougou.search.listener.MessageListener" />
+</beans>

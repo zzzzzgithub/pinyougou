@@ -122,6 +122,14 @@
             </exclusions>
         </dependency>
 
+        <!--rocketmq-->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou_common</artifactId>

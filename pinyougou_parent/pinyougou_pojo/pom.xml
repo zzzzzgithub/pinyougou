@@ -17,6 +17,12 @@
             <artifactId>persistence-api</artifactId>
             <version>1.0</version>
         </dependency>
+        <!-- fastjson处理工具包 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
         <!--spring-es-->
         <dependency>
             <groupId>org.springframework.data</groupId>
