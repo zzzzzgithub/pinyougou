@@ -97,7 +97,7 @@ public class SmsUtils {
         //组装请求对象
         QuerySendDetailsRequest request = new QuerySendDetailsRequest();
         //必填-号码
-        request.setPhoneNumber("13537768500");
+        request.setPhoneNumber("15000000000");
         //可选-流水号
         request.setBizId(bizId);
         //必填-发送日期 支持30天内记录查询，格式yyyyMMdd

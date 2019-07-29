@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2019/7/28 21:05
  */
 @Configuration
-public class ConsumerConfiguration {
+public class  ConsumerConfiguration {
     @Autowired
     private SmsMessageListener smsMessageListener;
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * @author pdd
  * @version 1.0
@@ -25,7 +26,7 @@ public class SmsMessageListener implements MessageListenerConcurrently {
     private SmsUtils smsUtils;
 
     @Override
-    public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
+    public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
         //循环读取消息
         try {
             for (MessageExt msg : msgs) {
@@ -34,8 +35,10 @@ public class SmsMessageListener implements MessageListenerConcurrently {
                 //读取参数列表
                 Map<String, String> map = JSON.parseObject(body, Map.class);
                 //调用工具发送消息
+
+
                 SendSmsResponse response = smsUtils.sendSms(
-                        map.get("mobile"),
+                        map.get("phone"),
                         map.get("template_code"),
                         map.get("sign_name"),
                         map.get("param")

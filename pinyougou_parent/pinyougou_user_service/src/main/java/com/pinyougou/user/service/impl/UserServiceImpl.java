@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
             map.put("phone", phone);
             map.put("template_code", "SMS_168592714");
             map.put("sign_name", "郑记牛杂面");
-            map.put("param", "{\"number\":" + code + "}");
+            map.put("param", "{\"code\":" + code + "}");
             //把map转换成string
             String json = JSON.toJSONString(map);
             //创建消息对象
