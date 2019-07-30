@@ -2,7 +2,7 @@ package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbSeckillOrder;
-import com.pinyougou.service.SeckillOrderService;
+import com.pinyougou.cart.service.SeckillOrderService;
 import entity.PageResult;
 import entity.Result;
 import org.springframework.web.bind.annotation.RequestBody;

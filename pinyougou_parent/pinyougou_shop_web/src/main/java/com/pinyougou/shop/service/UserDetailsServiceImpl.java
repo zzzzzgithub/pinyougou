@@ -2,7 +2,7 @@ package com.pinyougou.shop.service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbSeller;
-import com.pinyougou.service.SellerService;
+import com.pinyougou.cart.service.SellerService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

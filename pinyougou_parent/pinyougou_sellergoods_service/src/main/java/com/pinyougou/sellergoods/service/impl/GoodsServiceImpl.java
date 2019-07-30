@@ -8,7 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.*;
 import com.pinyougou.pojo.*;
 import com.pinyougou.pojogroup.Goods;
-import com.pinyougou.service.GoodsService;
+import com.pinyougou.cart.service.GoodsService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

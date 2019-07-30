@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.TbSeckillGoodsMapper;
 import com.pinyougou.pojo.TbSeckillGoods;
-import com.pinyougou.service.SeckillGoodsService;
+import com.pinyougou.cart.service.SeckillGoodsService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 

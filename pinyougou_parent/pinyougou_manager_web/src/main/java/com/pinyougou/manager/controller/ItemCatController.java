@@ -2,7 +2,7 @@ package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbItemCat;
-import com.pinyougou.service.ItemCatService;
+import com.pinyougou.cart.service.ItemCatService;
 import entity.PageResult;
 import entity.Result;
 import org.springframework.web.bind.annotation.RequestBody;

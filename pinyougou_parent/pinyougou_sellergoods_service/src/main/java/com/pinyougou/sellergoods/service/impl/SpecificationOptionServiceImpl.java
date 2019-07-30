@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.pojo.TbSpecificationOption;
-import com.pinyougou.service.SpecificationOptionService;
+import com.pinyougou.cart.service.SpecificationOptionService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 

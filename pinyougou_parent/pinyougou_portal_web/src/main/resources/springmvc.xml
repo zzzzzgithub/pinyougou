@@ -25,9 +25,8 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
     <!-- 引用dubbo 服务 -->
-    <!--记得修改,复制过来的是pinyougou-manager-web   -->
     <dubbo:application name="pinyougou-portal-web" />
     <dubbo:registry address="zookeeper://192.168.218.128:2181"/>
-    <dubbo:annotation package="com.pinyougou.protal.controller" />
+    <dubbo:annotation package="com.pinyougou.portal.controller" />
 
 </beans>

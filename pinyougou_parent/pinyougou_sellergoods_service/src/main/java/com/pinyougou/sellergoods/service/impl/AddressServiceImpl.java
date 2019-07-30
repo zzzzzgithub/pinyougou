@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.TbAddressMapper;
 import com.pinyougou.pojo.TbAddress;
-import com.pinyougou.service.AddressService;
+import com.pinyougou.cart.service.AddressService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 

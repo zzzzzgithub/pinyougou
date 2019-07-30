@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.TbOrderItemMapper;
 import com.pinyougou.pojo.TbOrderItem;
-import com.pinyougou.service.OrderItemService;
+import com.pinyougou.cart.service.OrderItemService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 

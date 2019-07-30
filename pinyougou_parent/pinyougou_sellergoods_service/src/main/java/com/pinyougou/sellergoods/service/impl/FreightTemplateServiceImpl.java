@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.TbFreightTemplateMapper;
 import com.pinyougou.pojo.TbFreightTemplate;
-import com.pinyougou.service.FreightTemplateService;
+import com.pinyougou.cart.service.FreightTemplateService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 

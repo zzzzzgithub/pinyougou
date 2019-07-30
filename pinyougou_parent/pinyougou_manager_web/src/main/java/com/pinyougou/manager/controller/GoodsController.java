@@ -6,7 +6,7 @@ import com.pinyougou.manager.utils.MessageSender;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
-import com.pinyougou.service.GoodsService;
+import com.pinyougou.cart.service.GoodsService;
 import entity.EsItem;
 import entity.MessageInfo;
 import entity.PageResult;

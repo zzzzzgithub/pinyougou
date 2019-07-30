@@ -3,7 +3,7 @@ package com.pinyougou.shop.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojogroup.Goods;
-import com.pinyougou.service.GoodsService;
+import com.pinyougou.cart.service.GoodsService;
 import entity.PageResult;
 import entity.Result;
 import org.springframework.security.core.context.SecurityContextHolder;

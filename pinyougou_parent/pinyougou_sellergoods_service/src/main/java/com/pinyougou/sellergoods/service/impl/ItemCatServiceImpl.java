@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.TbItemCatMapper;
 import com.pinyougou.pojo.TbItemCat;
-import com.pinyougou.service.ItemCatService;
+import com.pinyougou.cart.service.ItemCatService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

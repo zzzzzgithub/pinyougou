@@ -9,7 +9,7 @@ import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.mapper.TbTypeTemplateMapper;
 import com.pinyougou.pojo.TbSpecificationOption;
 import com.pinyougou.pojo.TbTypeTemplate;
-import com.pinyougou.service.TypeTemplateService;
+import com.pinyougou.cart.service.TypeTemplateService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

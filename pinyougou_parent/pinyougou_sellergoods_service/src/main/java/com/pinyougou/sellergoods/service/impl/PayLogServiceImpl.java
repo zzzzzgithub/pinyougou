@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.TbPayLogMapper;
 import com.pinyougou.pojo.TbPayLog;
-import com.pinyougou.service.PayLogService;
+import com.pinyougou.cart.service.PayLogService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 

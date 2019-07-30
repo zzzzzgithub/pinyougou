@@ -9,7 +9,7 @@ import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.pojo.TbSpecification;
 import com.pinyougou.pojo.TbSpecificationOption;
 import com.pinyougou.pojogroup.Specification;
-import com.pinyougou.service.SpecificationService;
+import com.pinyougou.cart.service.SpecificationService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
