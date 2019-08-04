@@ -8,6 +8,7 @@ import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojogroup.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
  * @date 2019-7-30
  */
 @Service
+@CrossOrigin
 public class CartServiceImpl implements CartService {
     @Autowired
     private TbItemMapper itemMapper;

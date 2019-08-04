@@ -7,7 +7,7 @@ window.onload = function () {
             //记录用户选择的规格{网络：移动4G}
             specificationItems: {},
             //当前将要购买的商品
-            sku:{}
+            sku: {}
         },
         methods: {
             //修改购买数量
@@ -22,9 +22,9 @@ window.onload = function () {
              * @param specName 规格名称
              * @param optionName 选项名称
              */
-            selectSpecification:function (specName,optionName) {
+            selectSpecification: function (specName, optionName) {
                 //记录用户选中的规格
-                app.$set(this.specificationItems,specName,optionName);
+                app.$set(this.specificationItems, specName, optionName);
 
                 //刷新sku信息
                 this.searchSku();
@@ -35,25 +35,25 @@ window.onload = function () {
              * @param optionName 选项名称
              * @return {boolean}
              */
-            isSelected:function (specName,optionName) {
+            isSelected: function (specName, optionName) {
                 return this.specificationItems[specName] == optionName;
             },
             //加载默认的sku
-            loadSku:function () {
+            loadSku: function () {
                 //第一个就是默认的，因为后台排序过
                 this.sku = skuList[0];
                 //让默认的规格选中,注意这里一定要用深克隆复制信息
                 this.specificationItems = JSON.parse(JSON.stringify(this.sku.spec));
             },
             //匹配两个对象的内容是否一致
-            matchObject:function(map1,map2){
-                for(var k in map1){
-                    if(map1[k]!=map2[k]){
+            matchObject: function (map1, map2) {
+                for (var k in map1) {
+                    if (map1[k] != map2[k]) {
                         return false;
                     }
                 }
-                for(var k in map2){
-                    if(map2[k]!=map1[k]){
+                for (var k in map2) {
+                    if (map2[k] != map1[k]) {
                         return false;
                     }
                 }
@@ -73,13 +73,22 @@ window.onload = function () {
             },
             //添加购物车
             addToCart: function () {
-                //先打印出来看看，后续课程使用到
-                alert('skuid:' + this.sku.id);
+                axios.get('http://localhost:8088/cart/addGoodsToCartList.do?itemId='
+                    + this.sku.id + '&num=' + this.num,{'withCredentials':true}).then(function (response) {
+                    if (response.data.success) {
+                        //跳转到购物车页面
+                        window.location.href = 'http://localhost:8088/cart.html';
+
+                    } else {
+                        alert(response.data.message);
+                    }
+                })
             }
 
         },
         created: function () {
             this.loadSku();
+
         }
     });
 }

@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="css/pages-zoom.css"/>
     <link rel="stylesheet" type="text/css" href="css/widget-cartPanelView.css"/>
 
-    <script type="text/javascript" src="plugins/Vu==e/vuejs-2.5.16.js"></script>
+    <script type="text/javascript" src="plugins/Vue/vuejs-2.5.16.js"></script>
     <script type="text/javascript" src="js/controller/itemController.js"></script>
 
     <script type="text/javascript">
@@ -134,18 +134,18 @@
                     <#assign specificationList=goodsDesc.specificationItems?eval />
                     <div id="specification" class="summary-wrap clearfix">
                         <#list specificationList as spec>
-                            <dl>
-                                <dt>
-                                    <div class="fl title">
-                                        <i>${spec.attributeName}</i>
-                                    </div>
-                                </dt>
-                                <#--<dd><a href="javascript:;" class="selected">金色<span title="点击取消选择">&nbsp;</span>
-                                    </a></dd>-->
-                                <#list spec.attributeValue as option>
-                                    <dd><a @click="selectSpecification('${spec.attributeName}','${option}')" href="javascript:;" :class="isSelected('${spec.attributeName}','${option}') ? 'selected' : ''">${option}<span title="点击取消选择">&nbsp;</span></a></dd>
-                                </#list>
-                            </dl>
+                        <dl>
+                            <dt>
+                                <div class="fl title">
+                                    <i>${spec.attributeName}</i>
+                                </div>
+                            </dt>
+                            <#--<dd><a href="javascript:;" class="selected">金色<span title="点击取消选择">&nbsp;</span>
+                                </a></dd>-->
+                            <#list spec.attributeValue as option>
+                            <dd><a @click="selectSpecification('${spec.attributeName}','${option}')" href="javascript:;" :class="isSelected('${spec.attributeName}','${option}') ? 'selected' : ''">${option}<span title="点击取消选择">&nbsp;</span></a></dd>
+                            </#list>
+                        </dl>
                         </#list>
                     </div>
                     用户选择的规格：{{specificationItems}}
